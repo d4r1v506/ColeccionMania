@@ -1,7 +1,4 @@
 package com.example.coleccionmania.view
-
-import android.R
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,30 +9,61 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.coleccionmania.model.Product
+import com.example.coleccionmania.navigation.ItemsMenu
 
 
+
+@Composable
+fun MainScreen(){
+    Column() {
+        Categorias()
+
+        Busqueda()
+        ListProduct()
+    }
+}
+
+@Composable
+fun Categorias(){
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier.fillMaxWidth()) {
+        Text(text = "Figuras")
+        Text(text = "Juegos")
+        Text(text = "Colección")
+    }
+}
 @Composable
 fun Busqueda(){
     val busqueda = remember {
@@ -44,11 +72,8 @@ fun Busqueda(){
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-
-        // verticalArrangement = Arrangement.Center
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
             value = busqueda.value,
@@ -80,14 +105,13 @@ fun Busqueda(){
 @Composable
 fun ListProduct(){
 
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-     //*   Busqueda()
-        Spacer(modifier = Modifier.height(16.dp))
-        Column(modifier = Modifier.weight(1f)) {
-        MainScreen(
+        item {
+        Producto(
             Product(
                 id = "1",
                 name ="Figura1",
@@ -97,7 +121,7 @@ fun ListProduct(){
             )
         )
         Divider()
-        MainScreen(
+        Producto(
             Product(
                 id = "2",
                 name ="Figura2",
@@ -111,7 +135,7 @@ fun ListProduct(){
 }
 
 @Composable
-fun MainScreen(product: Product){
+fun Producto(product: Product){
 
         Row(
             modifier = Modifier
@@ -163,5 +187,5 @@ fun MainScreen(product: Product){
 )
 @Composable
 fun MainScreenPreview(){
-        ListProduct()
+        MainScreen()
 }
