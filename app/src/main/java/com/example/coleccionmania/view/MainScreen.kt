@@ -41,18 +41,27 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.coleccionmania.model.Product
 import com.example.coleccionmania.navigation.ItemsMenu
-
+import com.example.coleccionmania.navigation.MyBottomBar
+import com.example.coleccionmania.navigation.TopBar
 
 
 @Composable
 fun MainScreen(){
-    Column() {
-        Categorias()
+    Column {
+       // TopBar()
+      //  Categorias()
 
         Busqueda()
         ListProduct()
+       MyBottomBar()
+
+
+
+
     }
 }
+
+
 
 @Composable
 fun Categorias(){

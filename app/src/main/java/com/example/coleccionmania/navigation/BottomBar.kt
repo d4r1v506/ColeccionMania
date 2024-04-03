@@ -1,73 +1,29 @@
-package com.example.coleccionmania
+package com.example.coleccionmania.navigation
 
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.coleccionmania.ui.theme.ColeccionManiaTheme
-
-import com.example.coleccionmania.navigation.ItemsMenu.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.coleccionmania.navigation.AppScreens
-import com.example.coleccionmania.navigation.ItemsMenu.Favoritos.icon
+import androidx.navigation.compose.rememberNavController
+import com.example.coleccionmania.R
 import com.example.coleccionmania.view.LoginScreen
 import com.example.coleccionmania.view.MainScreen
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ColeccionManiaTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    //AppNavigation()
-                    MainScreen()
-                    //com.example.coleccionmania.view.MainScreen()
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun MyBottomBar(){
@@ -98,7 +54,7 @@ fun MyBottomBar(){
                         modifier = Modifier.size(50.dp)
 
                     )
-                   // Icon(Icons.Default.Home, contentDescription = null, modifier = Modifier.size(26.dp),
+                    // Icon(Icons.Default.Home, contentDescription = null, modifier = Modifier.size(26.dp),
 
                 }
                 IconButton(
@@ -149,34 +105,31 @@ fun MyBottomBar(){
 
                     )
                 }
-               /* Box(modifier = Modifier
-                    .weight(1f)
-                    .padding(16.dp),
-                    contentAlignment = Alignment.Center){
-                    FloatingActionButton(onClick = { Toast.makeText(context, "open botton shep", Toast.LENGTH_SHORT).show() }) {
-                        Icon(Icons.Default.Add, contentDescription = null, tint = Color.Green)
-                    }
-                }*/
+                /* Box(modifier = Modifier
+                     .weight(1f)
+                     .padding(16.dp),
+                     contentAlignment = Alignment.Center){
+                     FloatingActionButton(onClick = { Toast.makeText(context, "open botton shep", Toast.LENGTH_SHORT).show() }) {
+                         Icon(Icons.Default.Add, contentDescription = null, tint = Color.Green)
+                     }
+                 }*/
             }
         }
     )
     {
-        paddingValues->
+            paddingValues->
         NavHost(navController = navigationController,
             startDestination = AppScreens.MainScreen.route,
             modifier = Modifier.padding(paddingValues)){
             composable(AppScreens.MainScreen.route){ MainScreen() }
-            composable(AppScreens.Login.route){LoginScreen()}
+            composable(AppScreens.Login.route){ LoginScreen() }
 
         }
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
-fun MyBottonBarPreview(){
+fun PreviewBottomBar(){
     MyBottomBar()
 }
-
-
-
