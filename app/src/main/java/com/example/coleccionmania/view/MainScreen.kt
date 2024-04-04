@@ -53,7 +53,7 @@ fun MainScreen(){
 
         Busqueda()
         ListProduct()
-       MyBottomBar()
+     //*  MyBottomBar()
 
 
 

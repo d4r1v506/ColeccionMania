@@ -47,6 +47,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.navigation.ItemsMenu.Favoritos.icon
+import com.example.coleccionmania.view.CarruselCard
 import com.example.coleccionmania.view.LoginScreen
 import com.example.coleccionmania.view.MainScreen
 
@@ -62,6 +63,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //AppNavigation()
                     MainScreen()
+                    //CarruselCard()
                     //com.example.coleccionmania.view.MainScreen()
                 }
             }
