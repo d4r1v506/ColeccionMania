@@ -25,13 +25,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(){
+fun TopBar(texto: String){
     val navigationController = rememberNavController()
     Scaffold(
         modifier = Modifier
@@ -42,7 +43,7 @@ fun TopBar(){
                navigationIcon = {
                    IconButton(onClick = { navigationController.navigateUp() }) {
                        Icon(
-                           imageVector = Icons.Filled.Menu , contentDescription = null,
+                           imageVector = Icons.Filled.KeyboardArrowLeft , contentDescription = null,
                            tint = Color.White
                        )
                    }
@@ -66,7 +67,7 @@ fun TopBar(){
                 },
                 colors = TopAppBarDefaults.topAppBarColors(Color(0xFF2196F3)),
                 title = {
-                    Text(text = "ColeccionMania", color = Color.White)
+                    Text(text = "$texto", color = Color.White)
                 }
             )
         },
@@ -81,3 +82,9 @@ fun TopBar(){
 fun Contenido(){
     Text(text = "HOla mundo")
 }
+
+/*@Preview
+@Composable
+fun PreviewTopBar(){
+    TopBar()
+}*/

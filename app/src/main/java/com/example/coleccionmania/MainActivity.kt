@@ -50,6 +50,7 @@ import com.example.coleccionmania.navigation.ItemsMenu.Favoritos.icon
 import com.example.coleccionmania.view.CarruselCard
 import com.example.coleccionmania.view.LoginScreen
 import com.example.coleccionmania.view.MainScreen
+import com.example.coleccionmania.view.Pedido
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +63,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //AppNavigation()
-                    MainScreen()
+                  //  MainScreen()
+                    Pedido()
                     //CarruselCard()
                     //com.example.coleccionmania.view.MainScreen()
                 }
