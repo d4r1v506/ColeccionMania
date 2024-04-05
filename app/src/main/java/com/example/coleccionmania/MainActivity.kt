@@ -43,12 +43,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHost
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.navigation.ItemsMenu.Favoritos.icon
 import com.example.coleccionmania.view.CarruselCard
+import com.example.coleccionmania.view.DetailScreen
 import com.example.coleccionmania.view.LoginScreen
+import com.example.coleccionmania.view.Main
 import com.example.coleccionmania.view.MainScreen
 import com.example.coleccionmania.view.Pedido
 
@@ -63,8 +67,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //AppNavigation()
-                  //  MainScreen()
-                    Pedido()
+                    MainScreen()
+                  //  Pedido()
                     //CarruselCard()
                     //com.example.coleccionmania.view.MainScreen()
                 }

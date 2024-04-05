@@ -182,7 +182,7 @@ fun Pedido() {
 
 
             Spacer(modifier = Modifier.height(35.dp))
-           
+
             Button(
                 onClick = { showModalBottomSheet.value = !showModalBottomSheet.value },
                 Modifier.fillMaxWidth(),
