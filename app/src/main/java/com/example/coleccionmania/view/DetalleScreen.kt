@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -37,26 +35,24 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.example.coleccionmania.MyBottomBar
+//import com.example.coleccionmania.MyBottomBar
 import com.example.coleccionmania.R
-import com.example.coleccionmania.navigation.TopBar
+import com.example.coleccionmania.model.Product
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun Detalle(){
+fun Detalle(productName: String, productDetail: String, productPrice: String, productImage: String){
 
     Column {
-        CarruselCard()
-        Descripcion()
+        CarruselCard(productImage)
+            Descripcion(productName, productDetail, productPrice)
     }
 
    /* TopBar()
@@ -65,16 +61,18 @@ fun Detalle(){
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CarruselCard() {
+fun CarruselCard(productImage: String) {
+
+    val sliderList = listOf(
+        productImage
+        //"https://picsum.photos/id/237/200/300",
+       // "https://picsum.photos/seed/picsum/200/300",
+       // "https://picsum.photos/200/300?grayscale"
+    )
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f,
-        pageCount = { 3 } // Reemplaza 3 con el número real de páginas
-    )
-    val sliderList = listOf(
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale"
+        pageCount = { sliderList.size } // Reemplaza 3 con el número real de páginas
     )
     val scope = rememberCoroutineScope()
     Row(
@@ -167,12 +165,14 @@ fun CarruselCard() {
 }
 
 @Composable
-fun Descripcion(){
+fun Descripcion(productName: String, productDetail: String, productPrice: String){
     Column(modifier = Modifier.fillMaxWidth().padding(15.dp)) {
+        Text(text = "Nombre")
+        Text(text =  productName)
         Text(text = "Descripción", color = Color(0xFF3F51B5))
-        Text(text = "teasdaksdjnasjdkanskdjnasjdnaskjdnasjkdnasjkdnajks")
+        Text(text =  productDetail)
         Text(text = "Precio")
-        Text(text = "$123", color = Color.Green)
+        Text(text = "$productPrice", color = Color.Green)
        // Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = { /*TODO*/ },
@@ -184,8 +184,8 @@ fun Descripcion(){
     }
 }
 
-@Preview(showSystemUi = true)
+/*@Preview(showSystemUi = true)
 @Composable
 fun PreviewCarrusel() {
     Detalle()
-}
+}*/

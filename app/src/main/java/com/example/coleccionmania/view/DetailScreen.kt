@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -44,4 +45,10 @@ fun DetailScreen(
         Text(text = names[itemIndex!!], fontSize = 30.sp, fontWeight = FontWeight.Bold)
         Text(text = ingredients[itemIndex], fontSize = 18.sp)
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewDetail(){
+    //DetailScreen()
 }

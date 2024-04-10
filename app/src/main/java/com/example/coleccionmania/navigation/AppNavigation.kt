@@ -1,14 +1,15 @@
 package com.example.coleccionmania.navigation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.coleccionmania.controller.Login
-import com.example.coleccionmania.model.Product
+import com.example.coleccionmania.ProductsViewModel
+import com.example.coleccionmania.view.Detalle
 import com.example.coleccionmania.view.ListProduct
 import com.example.coleccionmania.view.LoginScreen
-import com.example.coleccionmania.view.MainScreen
 import com.example.coleccionmania.view.SplashScreen
 
 
@@ -24,10 +25,19 @@ fun AppNavigation(){
             SplashScreen(navController)
         }
         composable(AppScreens.MainScreen.route){
-           ListProduct()
+           ListProduct(viewModel = ProductsViewModel(), navController)
         }
         composable(AppScreens.Login.route){
             LoginScreen()
+        }
+
+        composable("${AppScreens.MainScreen.route}/{productName}/{productDetail}/{productPrice}/{productImage}") { backStackEntry ->
+            Detalle(
+                productName = backStackEntry.arguments?.getString("productName") ?: "",
+                productDetail = backStackEntry.arguments?.getString("productDetail") ?: "",
+                productPrice = backStackEntry.arguments?.getString("productPrice") ?: "",
+                productImage = Uri.decode(backStackEntry.arguments?.getString("productImage") ?: "")
+            )
         }
     }
 }

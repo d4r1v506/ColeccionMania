@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.coleccionmania.ProductsViewModel
 import com.example.coleccionmania.R
 import com.example.coleccionmania.view.LoginScreen
 import com.example.coleccionmania.view.MainScreen
@@ -121,7 +122,7 @@ fun MyBottomBar(){
         NavHost(navController = navigationController,
             startDestination = AppScreens.MainScreen.route,
             modifier = Modifier.padding(paddingValues)){
-            composable(AppScreens.MainScreen.route){ MainScreen() }
+         //   composable(AppScreens.MainScreen.route){ MainScreen(viewModel = ProductsViewModel()) }
             composable(AppScreens.Login.route){ LoginScreen() }
 
         }

@@ -1,62 +1,44 @@
 package com.example.coleccionmania
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.coleccionmania.ui.theme.ColeccionManiaTheme
-
-import com.example.coleccionmania.navigation.ItemsMenu.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHost
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.compose.rememberNavController
+import com.example.coleccionmania.navigation.AppNavigation
 import com.example.coleccionmania.navigation.AppScreens
-import com.example.coleccionmania.navigation.ItemsMenu.Favoritos.icon
-import com.example.coleccionmania.view.CarruselCard
-import com.example.coleccionmania.view.DetailScreen
+import com.example.coleccionmania.ui.theme.ColeccionManiaTheme
+import com.example.coleccionmania.view.Detalle
+import com.example.coleccionmania.view.ListProduct
 import com.example.coleccionmania.view.LoginScreen
-import com.example.coleccionmania.view.Main
 import com.example.coleccionmania.view.MainScreen
-import com.example.coleccionmania.view.Pedido
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: ProductsViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -66,8 +48,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //AppNavigation()
-                    MainScreen()
+                    AppNavigation()
+                   // MainScreen(viewModel, navHostController = nav)
+                   // Detalle()
+                  //*  ListProduct(viewModel = viewModel)
                   //  Pedido()
                     //CarruselCard()
                     //com.example.coleccionmania.view.MainScreen()
@@ -77,7 +61,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
+/*@Composable
 fun MyBottomBar(){
     val navigationController = rememberNavController()
     val context = LocalContext.current.applicationContext
@@ -185,6 +169,6 @@ fun MyBottomBar(){
 fun MyBottonBarPreview(){
     MyBottomBar()
 }
-
+*/
 
 

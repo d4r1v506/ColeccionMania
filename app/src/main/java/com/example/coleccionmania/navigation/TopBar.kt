@@ -83,8 +83,8 @@ fun Contenido(){
     Text(text = "HOla mundo")
 }
 
-/*@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun PreviewTopBar(){
-    TopBar()
-}*/
+    TopBar("test")
+}
