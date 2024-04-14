@@ -5,6 +5,15 @@
       <entry key="App">
         <State />
       </entry>
+      <entry key="PreviewBottomBar">
+        <State />
+      </entry>
+      <entry key="PreviewMainScreen">
+        <State />
+      </entry>
+      <entry key="PreviewPedido">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

@@ -1,5 +1,6 @@
 package com.example.coleccionmania.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -48,20 +50,25 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.coleccionmania.R
+import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.navigation.TopBar
 import kotlinx.coroutines.launch
 
 @Composable
-fun DetallPedido() {
+fun DetallPedido(productName: String, productPrice: String, productImage: String) {
 
-    Pedido()
-    TopBar("Mi Pedido")
+    Column {
+        TopBar("Mi Pedido")
+        Pedido(productName, productPrice, productImage)
+    }
 }
 
 @Composable
-fun Pedido() {
+fun Pedido(productName: String, productPrice: String, productImage: String) {
 
+    var selectedPago = remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var aceptarDialog by remember { mutableStateOf(false) }
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
@@ -69,10 +76,8 @@ fun Pedido() {
     val showModalBottomSheet = rememberSaveable { mutableStateOf(false) }
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color.LightGray // Cambia aquí el color de fondo
+        color = Color.LightGray
     ) {
-        // Contenido de tu pantalla aquí
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -86,9 +91,10 @@ fun Pedido() {
                     .padding(vertical = 60.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    //painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = rememberImagePainter(productImage),
                     contentDescription = "logo ColeccionMania",
-                    modifier = Modifier.size(200.dp)
+                    modifier = Modifier.size(160.dp)
                 )
             }
             Row(
@@ -104,13 +110,21 @@ fun Pedido() {
                 ) {
                     Column(modifier = Modifier.padding(15.dp)) {
                         Text(
-                            text = "Detalle del Pedido",
+                            text = "Nombre del producto",
                             color = Color.DarkGray,
                             fontWeight = FontWeight.Bold
                         )
                         Divider()
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(text = "Detalle del producto")
+                        Text(text =  productName)
+
+                        Text(text = "Valor:  ", fontWeight = FontWeight.Bold, color = Color.DarkGray)
+                        Text(
+                            text = "$${productPrice}",
+                            color = Color(0xFF4CAF50),
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Black
+                        )
                     }
                 }
             }
@@ -135,12 +149,12 @@ fun Pedido() {
                     }
                     Text(text = "Código Promocional", fontWeight = FontWeight.Bold)
                 }
-                if (aceptarDialog == true) {
+                AnimatedVisibility (aceptarDialog == true) {
                     Text(text = "Código: ${textFieldValue.text.uppercase()}", Modifier.padding(15.dp))
                 }
             }
 
-            if (showDialog) {
+            AnimatedVisibility (showDialog) {
                 AlertDialog(
                     onDismissRequest = { showDialog = false },
                     title = {
@@ -171,14 +185,14 @@ fun Pedido() {
                 )
             }
 
-            Spacer(modifier = Modifier.height(15.dp))
-            Text(text = "A Pagar:  ", fontWeight = FontWeight.Bold, color = Color.DarkGray)
+            Spacer(modifier = Modifier.height(10.dp))
+           /* Text(text = "Valor:  ", fontWeight = FontWeight.Bold, color = Color.DarkGray)
             Text(
-                text = "$ 123",
+                text = "$${productPrice}",
                 color = Color(0xFF4CAF50),
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Black
-            )
+            )*/
 
 
             Spacer(modifier = Modifier.height(35.dp))
@@ -186,14 +200,32 @@ fun Pedido() {
             Button(
                 onClick = { showModalBottomSheet.value = !showModalBottomSheet.value },
                 Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black)
             ) {
-                Text(text = "Forma de Pago", fontSize = 15.sp)
+                Text(text =
+                if(selectedPago.value.isNotEmpty()){
+                    "${selectedPago.value}"
+                }else{
+                    "Seleccione Forma de Pago"
+                })
             }
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(
+                //onClick = { navHostController.navigate("${AppScreens.PedidoScreen.route}/$productName/$productPrice/$encodedImage")},
+                onClick = {},
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0XFFc33d42))
+            ) {
+                Text(text = "Pagar $${productPrice}", fontSize = 15.sp)
+            }
+
             if (showBottomSheetScaffold) TutorialBottomSheetScaffold()
         }
     }
-    TutorialModalBottomSheet(showModalBottomSheet)
+    TutorialModalBottomSheet(showModalBottomSheet, selectedPago)
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -219,7 +251,7 @@ fun TutorialBottomSheetScaffold() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TutorialModalBottomSheet(showModalBottomSheet: MutableState<Boolean>) {
+fun TutorialModalBottomSheet(showModalBottomSheet: MutableState<Boolean>, selectedPago: MutableState<String>) {
     val scope = rememberCoroutineScope()
 
     if (showModalBottomSheet.value) {
@@ -230,23 +262,26 @@ fun TutorialModalBottomSheet(showModalBottomSheet: MutableState<Boolean>) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp),
+                        .height(300.dp),
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextButton(onClick = { showModalBottomSheet.value = false }) {
-                        Text("Efectivo")
+                    TextButton(onClick = {
+                        selectedPago.value = "Efectivo"
+                        showModalBottomSheet.value = false }) {
+                        Text("Efectivo", fontSize = 20.sp)
                     }
                     Divider()
                     TextButton(onClick = { showModalBottomSheet.value = false }) {
-                        Text("Tarjeta de Debito/Credito")
+                        selectedPago.value = "Tarjeta"
+                        Text("Tarjeta de Debito/Credito", fontSize = 20.sp)
                     }
-                    Divider()
+                   /* Divider()
                     TextButton(onClick = { showModalBottomSheet.value = false }) {
+                        selectedPago.value = "Paypal"
                         Text("Paypal")
-                    }
-
-
+                    }*/
+                    Spacer(modifier = Modifier.height(50.dp))
                 }
             }
         )
@@ -256,5 +291,5 @@ fun TutorialModalBottomSheet(showModalBottomSheet: MutableState<Boolean>) {
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewPedido() {
-    DetallPedido()
+    DetallPedido("","","")
 }

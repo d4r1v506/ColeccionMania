@@ -65,7 +65,7 @@ fun TopBar(texto: String){
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(Color(0xFF2196F3)),
+                colors = TopAppBarDefaults.topAppBarColors(Color(0xFF070b31)),
                 title = {
                     Text(text = "$texto", color = Color.White)
                 }

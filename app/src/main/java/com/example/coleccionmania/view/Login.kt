@@ -156,7 +156,7 @@ fun OlvidePassword(modifier: Modifier) {
 fun Botones() {
     Button(
         onClick = { /*TODO*/ },
-        Modifier.width(150.dp),
+        //Modifier.width(150.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Text(text = "Iniciar Sesión", fontSize = 15.sp)
@@ -164,7 +164,7 @@ fun Botones() {
 
     OutlinedButton(
         onClick = { /*TODO*/ },
-        Modifier.width(150.dp),
+       // Modifier.width(150.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Text(text = "Registrarse", fontSize = 15.sp)

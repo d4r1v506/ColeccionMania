@@ -1,8 +1,7 @@
 package com.example.coleccionmania.model
 
-
-data class Product(
-    val id: String,
+data class Juegos(
+    val id: Int,
     val name: String,
     val detail: String,
     val price: String,

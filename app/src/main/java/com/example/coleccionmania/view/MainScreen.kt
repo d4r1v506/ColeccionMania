@@ -45,35 +45,36 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.example.coleccionmania.ProductsViewModel
+import com.example.coleccionmania.model.Juegos
 import com.example.coleccionmania.model.Product
 import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.navigation.ItemTabs
+import com.example.coleccionmania.navigation.MyBottomBar
 import com.example.coleccionmania.navigation.TopBar
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun MainScreen(viewModel: ProductsViewModel, navHostController: NavHostController) {
+fun MainScreen(viewModel: ProductsViewModel, viewModelJuegos: JuegosViewModel, navHostController: NavHostController) {
     Column {
          TopBar("ColeccionMania")
        // Categorias()
-        MovimientosTab(viewModel = viewModel, navHostController)
-
-        //  MyBottomBar()
-
+        MovimientosTab(viewModel = viewModel, viewModelJuegos = viewModelJuegos, navHostController)
 
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovimientosTab(viewModel: ProductsViewModel, navHostController: NavHostController){
+fun MovimientosTab(viewModel: ProductsViewModel, viewModelJuegos: JuegosViewModel, navHostController: NavHostController){
     val tabs = listOf(
         ItemTabs.tab_amiibos,
         ItemTabs.tab_juegos
@@ -84,18 +85,18 @@ fun MovimientosTab(viewModel: ProductsViewModel, navHostController: NavHostContr
         pageCount = { tabs.size } )
     Column {
         Tabs(tabs, pagerState)
-        TabsContent(tabs, pagerState, viewModel, navHostController)
+        TabsContent(tabs, pagerState, viewModel,viewModelJuegos, navHostController)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabsContent(tabs: List<ItemTabs>, pagerState: PagerState, viewModel: ProductsViewModel, navHostController: NavHostController) {
+fun TabsContent(tabs: List<ItemTabs>, pagerState: PagerState, viewModel: ProductsViewModel, viewModelJuegos: JuegosViewModel, navHostController: NavHostController) {
     HorizontalPager(
         state = pagerState,
         //pageCount = tabs.size
     ) {page ->
-        tabs[page].screen(viewModel, navHostController)
+        tabs[page].screen(viewModel, viewModelJuegos, navHostController)
         
     }
 }
@@ -131,7 +132,7 @@ fun Tabs(tabs: List<ItemTabs>, pagerState:  PagerState) {
 
 //Categorias
 @Composable
-fun Amiibos(viewModel: ProductsViewModel, navHostController: NavHostController) {
+fun Amiibos(viewModel: ProductsViewModel, viewModelJuegos: JuegosViewModel, navHostController: NavHostController) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -147,15 +148,58 @@ fun Amiibos(viewModel: ProductsViewModel, navHostController: NavHostController) 
 }
 
 @Composable
-fun Juegos(viewModel: ProductsViewModel, navHostController: NavHostController) {
+fun Juegos(viewModel: ProductsViewModel, viewModelJuegos: JuegosViewModel, navHostController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        Icon(Icons.Outlined.AccountBox, "Juegos")
-        Text(text = "Juegos")//contenido de la pagina
+        BusquedaJuegos(viewModelJuegos = viewModelJuegos)
+        ListJuegos(viewModelJuegos = viewModelJuegos, navHostController)
+       // Icon(Icons.Outlined.AccountBox, "Juegos")
+       // Text(text = "Juegos")//contenido de la pagina
+    }
+}
+
+@Composable
+fun BusquedaJuegos(viewModelJuegos: JuegosViewModel) {
+    val busqueda = remember {
+        mutableStateOf("")
+    }
+ //   val filteredJuegos by viewModelJuegos.filteredJuegos.collectAsState()
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        var keyboardController = LocalSoftwareKeyboardController.current
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = busqueda.value,
+            onValueChange = { newText ->
+                busqueda.value = newText
+                viewModelJuegos.filterJuegos(newText) // Llama al método de filtrado del ViewModel al cambiar el texto de búsqueda
+            },
+            placeholder = {
+                Text(text = "Busqueda")
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = Color.Gray,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(30.dp)
+                )
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search), // Especifica la acción de búsqueda para el botón de acción del teclado
+            keyboardActions = KeyboardActions(onSearch = {
+                viewModelJuegos.filterJuegos(busqueda.value) // Llama al método de filtrado del ViewModel cuando se presiona Enter
+                keyboardController?.hide()//oculta el teclado
+            }),
+            //modifier = Modifier.padding(8.dp)
+        )
     }
 }
 
@@ -342,6 +386,85 @@ fun Producto(product: Product, onClick:(String, String, String, String)->Unit) {
     Divider()*/
 }
 
+@Composable
+fun ListJuegos(viewModelJuegos: JuegosViewModel, navHostController: NavHostController) {
+
+    val juegos by viewModelJuegos.filteredJuegos.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModelJuegos.fetchJuegos()
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        items(juegos){currentJuego->
+            Juego(juego = currentJuego)// { productName, productDetail, productPrice, productImage ->
+              //  val encodedImage = Uri.encode(productImage)
+              //  navHostController.navigate("${AppScreens.MainScreen.route}/$productName/$productDetail/$productPrice/$encodedImage")
+           // }
+
+        }
+    }
+}
+
+@Composable
+fun Juego(juego: Juegos) {
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .wrapContentSize()
+            .clickable {
+                //onClick(product.name, product.detail, product.price, product.image)
+
+                //navController.navigate(route= "DetailScreen/$product")
+                //   navController.navigate(route= "DetailScreen")
+            },
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(10.dp)
+    ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                //val imageVector: Painter = painterResource(id = product.image)
+                Image(
+                    //imageVector = Icons.Filled.AccountBox,
+                    painter = rememberImagePainter(juego.image),
+                    contentDescription = null,
+                    modifier = Modifier.size(140.dp)
+                )
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text(text = juego.name, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    Text(text = juego.detail, fontSize = 15.sp)
+                }
+                Row(modifier = Modifier.padding(5.dp)) {
+                    Text(text = "# ${juego.id}", fontSize = 15.sp)
+                }
+
+            }
+            Text(
+                text = "$ ${juego.price}",
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                color = Color(0xFF4CAF50),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Black
+
+            )
+        }
+
+
+    }
+}
+
 //--------------------
 @Composable
 fun Main(
@@ -411,12 +534,12 @@ fun ColumnItem(
     }
 }
 
-/*
 @Preview(
     showBackground = true,
     showSystemUi = true
 )
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
-}*/
+    val navController = rememberNavController()
+    MainScreen(viewModel = ProductsViewModel(), viewModelJuegos = JuegosViewModel(),navController)
+}

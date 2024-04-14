@@ -1,5 +1,6 @@
 package com.example.coleccionmania.view
 
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -21,7 +23,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -35,24 +39,31 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 //import com.example.coleccionmania.MyBottomBar
 import com.example.coleccionmania.R
 import com.example.coleccionmania.model.Product
+import com.example.coleccionmania.navigation.AppScreens
+import com.example.coleccionmania.navigation.TopBar
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun Detalle(productName: String, productDetail: String, productPrice: String, productImage: String){
+fun Detalle(productName: String, productDetail: String, productPrice: String, productImage: String, navHostController: NavHostController){
 
     Column {
+        TopBar("Detalle")
         CarruselCard(productImage)
-            Descripcion(productName, productDetail, productPrice)
+        Descripcion(productName, productDetail, productPrice, productImage, navHostController)
     }
 
    /* TopBar()
@@ -64,6 +75,9 @@ fun Detalle(productName: String, productDetail: String, productPrice: String, pr
 fun CarruselCard(productImage: String) {
 
     val sliderList = listOf(
+        productImage,
+        productImage,
+        productImage,
         productImage
         //"https://picsum.photos/id/237/200/300",
        // "https://picsum.photos/seed/picsum/200/300",
@@ -165,27 +179,53 @@ fun CarruselCard(productImage: String) {
 }
 
 @Composable
-fun Descripcion(productName: String, productDetail: String, productPrice: String){
-    Column(modifier = Modifier.fillMaxWidth().padding(15.dp)) {
-        Text(text = "Nombre")
-        Text(text =  productName)
-        Text(text = "Descripción", color = Color(0xFF3F51B5))
-        Text(text =  productDetail)
-        Text(text = "Precio")
-        Text(text = "$productPrice", color = Color.Green)
+fun Descripcion(productName: String, productDetail: String, productPrice: String, productImage: String, navHostController: NavHostController){
+
+        Card(
+            modifier = Modifier
+                .padding(10.dp)
+                .wrapContentSize(),
+            colors = CardDefaults.cardColors(
+            containerColor = Color.White
+            ),
+            elevation = CardDefaults.cardElevation(10.dp)
+        ) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)) {
+            Text(
+                text = "Nombre",
+                color = Color.DarkGray,
+                fontWeight = FontWeight.Bold)
+            Text(text =  productName)
+            Text(text = "Descripción",
+                color = Color.DarkGray,
+                fontWeight = FontWeight.Bold)
+            Text(text =  productDetail)
+            Text(text = "Precio",
+                color = Color.DarkGray,
+                fontWeight = FontWeight.Bold)
+            Text(text = "$$productPrice",
+                color = Color(0xFF4CAF50),
+                fontWeight = FontWeight.Black)
+        }
+
        // Spacer(modifier = Modifier.weight(1f))
+            val encodedImage = Uri.encode(productImage)
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navHostController.navigate("${AppScreens.PedidoScreen.route}/$productName/$productPrice/$encodedImage")},
             Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0XFFc33d42))
         ) {
             Text(text = "Comprar", fontSize = 15.sp)
         }
     }
 }
 
-/*@Preview(showSystemUi = true)
+@Preview(showSystemUi = true)
 @Composable
 fun PreviewCarrusel() {
-    Detalle()
-}*/
+    val navController = rememberNavController()
+    Detalle("","","","", navController)
+}

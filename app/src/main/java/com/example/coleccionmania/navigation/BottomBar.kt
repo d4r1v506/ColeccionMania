@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.coleccionmania.ProductsViewModel
 import com.example.coleccionmania.R
+import com.example.coleccionmania.view.JuegosViewModel
 import com.example.coleccionmania.view.LoginScreen
 import com.example.coleccionmania.view.MainScreen
 
@@ -61,7 +62,7 @@ fun MyBottomBar(){
                 IconButton(
                     onClick = {
                         select.value = Icons.Default.AccountCircle
-                        navigationController.navigate(AppScreens.Login.route){
+                        navigationController.navigate(AppScreens.LoginScreen.route){
                             popUpTo(0)
                         }
                     },
@@ -77,7 +78,7 @@ fun MyBottomBar(){
                 IconButton(
                     onClick = {
                         select.value = Icons.Default.AccountCircle
-                        navigationController.navigate(AppScreens.Login.route){
+                        navigationController.navigate(AppScreens.LoginScreen.route){
                             popUpTo(0)
                         }
                     },
@@ -93,7 +94,7 @@ fun MyBottomBar(){
                 IconButton(
                     onClick = {
                         select.value = Icons.Default.AccountCircle
-                        navigationController.navigate(AppScreens.Login.route){
+                        navigationController.navigate(AppScreens.LoginScreen.route){
                             popUpTo(0)
                         }
                     },
@@ -122,8 +123,8 @@ fun MyBottomBar(){
         NavHost(navController = navigationController,
             startDestination = AppScreens.MainScreen.route,
             modifier = Modifier.padding(paddingValues)){
-         //   composable(AppScreens.MainScreen.route){ MainScreen(viewModel = ProductsViewModel()) }
-            composable(AppScreens.Login.route){ LoginScreen() }
+            composable(AppScreens.MainScreen.route){ MainScreen(viewModel = ProductsViewModel(), viewModelJuegos = JuegosViewModel(), navigationController) }
+            composable(AppScreens.LoginScreen.route){ LoginScreen() }
 
         }
     }

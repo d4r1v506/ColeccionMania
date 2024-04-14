@@ -6,8 +6,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://4392557e-d83c-4fe6-b616-9d145c552f5d.mock.pstmn.io/api/"
-        //"https://4e4fc2c0-1ffe-4bab-8f91-93eff6b286e4.mock.pstmn.io/v2/"
+    private const val BASE_URL ="https://www.amiiboapi.com/api/"// "https://4392557e-d83c-4fe6-b616-9d145c552f5d.mock.pstmn.io/api/"
+    private const val BASE_URL_GAME = "https://www.mmobomb.com/api1/"//"https://1765cc62-eb8f-4d51-a74d-7534088905b3.mock.pstmn.io/api1/"
 
     private val retrofit: Retrofit by lazy {
         print("La respuesta ")
@@ -17,8 +17,22 @@ object RetrofitInstance {
             .build()
 
     }
+
+    private val retrofitGame: Retrofit by lazy {
+        print("La respuesta ")
+        Retrofit.Builder()
+            .baseUrl(BASE_URL_GAME)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    }
+
     val productsService: ProductsService by lazy {
         retrofit.create(ProductsService::class.java)
+    }
+
+    val juegosService: JuegosService by lazy {
+        retrofitGame.create(JuegosService::class.java)
     }
 
 

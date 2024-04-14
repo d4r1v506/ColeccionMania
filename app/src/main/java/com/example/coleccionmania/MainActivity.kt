@@ -25,16 +25,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.coleccionmania.navigation.AppNavigation
 import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.ui.theme.ColeccionManiaTheme
+import com.example.coleccionmania.view.DetallPedido
 import com.example.coleccionmania.view.Detalle
 import com.example.coleccionmania.view.ListProduct
 import com.example.coleccionmania.view.LoginScreen
 import com.example.coleccionmania.view.MainScreen
+import com.example.coleccionmania.view.SplashScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -48,11 +51,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    //al navController = rememberNavController()
                     AppNavigation()
+
+                  // SplashScreen(navController)
                    // MainScreen(viewModel, navHostController = nav)
                    // Detalle()
                   //*  ListProduct(viewModel = viewModel)
-                  //  Pedido()
+                    //DetallPedido()
                     //CarruselCard()
                     //com.example.coleccionmania.view.MainScreen()
                 }
