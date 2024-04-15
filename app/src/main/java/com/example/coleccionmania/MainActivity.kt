@@ -5,39 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.coleccionmania.navigation.AppNavigation
-import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.ui.theme.ColeccionManiaTheme
-import com.example.coleccionmania.view.DetallPedido
-import com.example.coleccionmania.view.Detalle
-import com.example.coleccionmania.view.ListProduct
-import com.example.coleccionmania.view.LoginScreen
-import com.example.coleccionmania.view.MainScreen
-import com.example.coleccionmania.view.SplashScreen
+import com.example.coleccionmania.view.Camera
 
 class MainActivity : ComponentActivity() {
 
@@ -52,7 +24,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //al navController = rememberNavController()
-                    AppNavigation()
+                   //* AppNavigation()
+                    Camera()
 
                   // SplashScreen(navController)
                    // MainScreen(viewModel, navHostController = nav)
