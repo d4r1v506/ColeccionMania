@@ -1,19 +1,12 @@
 package com.example.coleccionmania.navigation
 
-import android.annotation.SuppressLint
 import android.net.Uri
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,6 +15,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.coleccionmania.ProductsViewModel
 import com.example.coleccionmania.view.BottomNavItem
+import com.example.coleccionmania.view.Camera
+import com.example.coleccionmania.view.ContenidoNewProudct
 import com.example.coleccionmania.view.DetallPedido
 import com.example.coleccionmania.view.Detalle
 import com.example.coleccionmania.view.JuegosViewModel
@@ -78,9 +73,41 @@ fun AppNavigation(){
             //MainScreen(viewModel = ProductsViewModel(),viewModelJuegos = JuegosViewModel(), navController)
             //FavouritesScreen()
         }*/
-       /* composable(AppScreens.Login.route) {
+        composable(AppScreens.Camera.route) {
+            Camera(navController)
+        }
+
+        composable(AppScreens.LoginScreen.route) {
             LoginScreen()
-            //PerfilScreen()
+        }
+
+        composable(AppScreens.NewProductScreen.route) {
+            ContenidoNewProudct("",navController)
+        }
+
+        composable("${AppScreens.NewProductScreen.route}/{encodedUri}") { backStackEntry ->
+            val uri = backStackEntry.arguments?.getString("encodedUri")
+            ContenidoNewProudct(
+                productImage = uri ?: "",
+                navController
+            )
+        }
+
+        /*composable(
+            route = "product/{imageUri}",
+            arguments = listOf(navArgument("imageUri") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val imageUri = backStackEntry.arguments?.getString("imageUri")
+            imageUri?.let {
+                Image(
+                    painter = rememberImagePainter(data = it),
+                    contentDescription = "Imagen tomada"
+                )
+            } ?: Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = "logo ColeccionMania",
+                modifier = Modifier.size(160.dp)
+            )
         }*/
 
         composable("${AppScreens.MainScreen.route}/{productName}/{productDetail}/{productPrice}/{productImage}") { backStackEntry ->
@@ -98,6 +125,7 @@ fun AppNavigation(){
                 productName = backStackEntry.arguments?.getString("productName") ?: "",
                 productPrice = backStackEntry.arguments?.getString("productPrice") ?: "",
                 productImage = Uri.decode(backStackEntry.arguments?.getString("productImage") ?: ""),
+                navController
             )
         }
     }

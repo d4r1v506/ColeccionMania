@@ -1,5 +1,6 @@
 package com.example.coleccionmania.view
 
+//import com.example.coleccionmania.MyBottomBar
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -49,9 +50,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-//import com.example.coleccionmania.MyBottomBar
 import com.example.coleccionmania.R
-import com.example.coleccionmania.model.Product
 import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.navigation.TopBar
 import kotlinx.coroutines.launch
@@ -61,7 +60,7 @@ import kotlin.math.absoluteValue
 fun Detalle(productName: String, productDetail: String, productPrice: String, productImage: String, navHostController: NavHostController){
 
     Column {
-        TopBar("Detalle")
+        TopBar("Detalle",navHostController)
         CarruselCard(productImage)
         Descripcion(productName, productDetail, productPrice, productImage, navHostController)
     }

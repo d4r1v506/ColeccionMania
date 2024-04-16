@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.coleccionmania.navigation.AppNavigation
 import com.example.coleccionmania.ui.theme.ColeccionManiaTheme
-import com.example.coleccionmania.view.Camera
 
 class MainActivity : ComponentActivity() {
 
@@ -24,8 +24,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //al navController = rememberNavController()
-                   //* AppNavigation()
-                    Camera()
+                    AppNavigation()
+                    //Camera()
 
                   // SplashScreen(navController)
                    // MainScreen(viewModel, navHostController = nav)

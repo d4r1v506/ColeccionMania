@@ -1,5 +1,6 @@
 package com.example.coleccionmania.view
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -22,15 +24,25 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -57,19 +69,87 @@ import com.example.coleccionmania.model.Juegos
 import com.example.coleccionmania.model.Product
 import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.navigation.ItemTabs
-import com.example.coleccionmania.navigation.MyBottomBar
-import com.example.coleccionmania.navigation.TopBar
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun MainScreen(viewModel: ProductsViewModel, viewModelJuegos: JuegosViewModel, navHostController: NavHostController) {
-    Column {
-         TopBar("ColeccionMania")
-       // Categorias()
-        MovimientosTab(viewModel = viewModel, viewModelJuegos = viewModelJuegos, navHostController)
 
-    }
+        Column {
+
+            TopBarItem()
+
+            Box(modifier = Modifier.weight(1f)) {
+                MovimientosTab(viewModel = viewModel, viewModelJuegos = viewModelJuegos, navHostController)
+            }
+
+        }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarItem(){
+    Scaffold(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        topBar = {
+            TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = {  }) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu , contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Filled.ShoppingCart, // Reemplaza "YourIcon" con el nombre del icono que desees usar
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert, // Reemplaza "YourIcon" con el nombre del icono que desees usar
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(Color(0xFF070b31)),
+                title = {
+                    Text(text = "ColeccionMania", color = Color.White)
+                }
+            )
+        },
+
+        content = {
+            Contenido()
+        }
+    )
+}
+@Composable
+fun Contenido(){
+    Text(text = "HOla mundo")
+}
+
+@Composable
+fun BotonFlotante(navHostController: NavHostController){
+
+        FloatingActionButton(
+            onClick = {
+                navHostController.navigate("product") // Reemplaza "camera_screen" con la ruta correcta a tu pantalla de cámara
+            },
+
+        ) {
+            Icon(Icons.Default.Add, contentDescription = "Tomar foto")
+        }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -244,6 +324,7 @@ fun Busqueda(viewModel: ProductsViewModel) {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ListProduct(viewModel: ProductsViewModel, navHostController: NavHostController) {
 
@@ -253,19 +334,26 @@ fun ListProduct(viewModel: ProductsViewModel, navHostController: NavHostControll
         viewModel.fetchProducts()
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Scaffold(
+        floatingActionButton = {
+            BotonFlotante(navHostController)
+        },
+        floatingActionButtonPosition = FabPosition.End,
     ) {
-        items(products){currentProduct->
-            Producto(product = currentProduct) { productName, productDetail, productPrice, productImage ->
-                val encodedImage = Uri.encode(productImage)
-                navHostController.navigate("${AppScreens.MainScreen.route}/$productName/$productDetail/$productPrice/$encodedImage")
-            }
 
-        }
-       /* item {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                items(products) { currentProduct ->
+                    Producto(product = currentProduct) { productName, productDetail, productPrice, productImage ->
+                        val encodedImage = Uri.encode(productImage)
+                        navHostController.navigate("${AppScreens.MainScreen.route}/$productName/$productDetail/$productPrice/$encodedImage")
+                    }
+
+                }
+                /* item {
             Producto(
                 Product(
                     id = "1",
@@ -286,7 +374,8 @@ fun ListProduct(viewModel: ProductsViewModel, navHostController: NavHostControll
                 )
             )
         }*/
-    }
+            }
+        }
 }
 
 @Composable
@@ -296,10 +385,10 @@ fun Producto(product: Product, onClick:(String, String, String, String)->Unit) {
             .padding(10.dp)
             .wrapContentSize()
             .clickable {
-                       onClick(product.name, product.detail, product.price, product.image)
+                onClick(product.name, product.detail, product.price, product.image)
 
                 //navController.navigate(route= "DetailScreen/$product")
-             //   navController.navigate(route= "DetailScreen")
+                //   navController.navigate(route= "DetailScreen")
             },
         colors = CardDefaults.cardColors(
             containerColor = Color.White

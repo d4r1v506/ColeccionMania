@@ -2,7 +2,6 @@ package com.example.coleccionmania.view
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,29 +43,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import com.example.coleccionmania.R
-import com.example.coleccionmania.navigation.AppScreens
 import com.example.coleccionmania.navigation.TopBar
 import kotlinx.coroutines.launch
 
 @Composable
-fun DetallPedido(productName: String, productPrice: String, productImage: String) {
+fun DetallPedido(productName: String, productPrice: String, productImage: String, navHostController: NavHostController) {
 
     Column {
-        TopBar("Mi Pedido")
-        Pedido(productName, productPrice, productImage)
+        TopBar("Mi Pedido", navHostController)
+        Pedido(productName, productPrice, productImage, navHostController)
     }
 }
 
 @Composable
-fun Pedido(productName: String, productPrice: String, productImage: String) {
+fun Pedido(productName: String, productPrice: String, productImage: String, navHostController: NavHostController) {
 
     var selectedPago = remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -212,8 +208,8 @@ fun Pedido(productName: String, productPrice: String, productImage: String) {
             }
             Spacer(modifier = Modifier.height(10.dp))
             Button(
-                //onClick = { navHostController.navigate("${AppScreens.PedidoScreen.route}/$productName/$productPrice/$encodedImage")},
-                onClick = {},
+                onClick = { navHostController.navigate("login")},
+               // onClick = {},
                 Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0XFFc33d42))
@@ -288,8 +284,9 @@ fun TutorialModalBottomSheet(showModalBottomSheet: MutableState<Boolean>, select
     }
 }
 
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewPedido() {
     DetallPedido("","","")
-}
+}*/

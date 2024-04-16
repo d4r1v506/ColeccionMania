@@ -1,13 +1,5 @@
 package com.example.coleccionmania.view
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.view.ViewGroup
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.view.LifecycleCameraController
-import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,108 +18,22 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import com.example.coleccionmania.R
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 
-import java.io.File
-import java.util.concurrent.Executor
-
-
-@SuppressLint("RememberReturnType")
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun Camera() {
-    val permissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
-    val context = LocalContext.current
-    val cameraController = remember {
-        LifecycleCameraController(context)
-    }
-    val lifecilcly = LocalLifecycleOwner.current
-
-    LaunchedEffect(Unit) {
-        permissionState.launchPermissionRequest()
-    }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                val executor = ContextCompat.getMainExecutor(context)
-                takePicture(cameraController, executor)
-            }) {
-               Text(text = "Camara")
-            }
-        }) {
-        if (permissionState.status.isGranted) {
-            CameraController(cameraController, lifecilcly, modifier = Modifier.padding(it))
-        } else {
-            Text(text = "Permiso Denegado", modifier = Modifier.padding(it))
-        }
-    }
-}
-
-private fun takePicture(cameraController: LifecycleCameraController, executor: Executor){
-    val file = File.createTempFile("foto",".jpg")
-    val outputDirectory = ImageCapture.OutputFileOptions.Builder(file).build()
-    cameraController.takePicture(outputDirectory, executor, object:ImageCapture.OnImageSavedCallback{
-        override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-            TODO("Not yet implemented")
-            println(outputFileResults.savedUri)
-        }
-
-        override fun onError(exception: ImageCaptureException) {
-            TODO("Not yet implemented")
-            println()
-        }
-
-    })
-}
-
-@Composable
-fun CameraController(
-    cameraController: LifecycleCameraController,
-    lifecicly: LifecycleOwner,
-    modifier: Modifier
-) {
-
-    cameraController.bindToLifecycle(lifecicly)
-    //Text(text = "Permiso Concedido")
-    AndroidView(modifier = modifier, factory = { context ->
-        val previewView = PreviewView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-            )
-        }
-        previewView.controller = cameraController
-        previewView
-    })
-}
 
 @Composable
 fun LoginScreen() {
@@ -159,10 +65,11 @@ fun Login(modifier: Modifier) {
 
 @Composable
 fun HeaderImage() {
-    Image(
-        painter = painterResource(id = R.drawable.ic_launcher_foreground),
-        contentDescription = "logo cabecera"
-    )
+    //Image(
+       // painter = painterResource(id = R.drawable.),
+        Icon(imageVector = Icons.Default.AccountCircle, contentDescription = null, modifier = Modifier.size(150.dp))
+        //contentDescription = "logo cabecera"
+   // )
 }
 
 @Composable
@@ -282,6 +189,5 @@ fun Version() {
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewForm() {
-    //LoginScreen()
-    //Camera()
+    LoginScreen()
 }
